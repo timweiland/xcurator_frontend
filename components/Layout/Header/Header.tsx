@@ -56,7 +56,7 @@ const SearchBar = (): JSX.Element => (
 
 export default function Header(): JSX.Element {
   return (
-    <Disclosure as="nav" className="bg-pink-800 fixed w-full">
+    <Disclosure as="nav" className="bg-pink-800 w-full shadow">
       {({ open }) => (
         <>
           <div className="mx-auto px-2 sm:px-6 lg:px-8 flex flex-col">
