@@ -1,8 +1,8 @@
 import axios from "axios";
 import create from "zustand";
 
-// TODO change me
-const API_BASE = "http://127.0.0.1:8000/users";
+const API_BASE =
+  process.env.NEXT_PUBLIC_BACKEND_BASE + process.env.NEXT_PUBLIC_USER_AUTH_PATH;
 
 interface User {
   id: string;
