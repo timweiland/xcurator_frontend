@@ -47,7 +47,7 @@ const LoginForm = () => {
       <h1 className="text-5xl font-bold leading-loose">Login</h1>
       <div className="w-full max-w-xl">
         <label htmlFor="username" className="sr-only">
-          Email address or username
+          Email address
         </label>
         <TextInput
           type="text"
@@ -55,7 +55,7 @@ const LoginForm = () => {
           id="username"
           placeholder="Email address or username"
           {...register("username", {
-            required: "You need to enter your email address or username.",
+            required: "You need to enter your email address.",
           })}
           errors={errors}
         />
@@ -128,7 +128,7 @@ const LoginContent = (): JSX.Element => {
 
 export default function Login(): JSX.Element {
   return (
-    <div class="container mx-auto flex flex-col items-center justify-center h-full">
+    <div className="container mx-auto flex flex-col items-center justify-center h-full">
       <Head>
         <title>xCurator | Login</title>
       </Head>

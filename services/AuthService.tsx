@@ -26,7 +26,7 @@ const fetchToken = (username: string, password: string): Promise<Response> => {
     .post(
       url,
       {
-        username: username,
+        email: username,
         password: password,
       },
       {
