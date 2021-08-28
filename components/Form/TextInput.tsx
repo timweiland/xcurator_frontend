@@ -13,7 +13,7 @@ const TextInput = ({ type, name, id, placeholder, errors, ...rest }) => {
     "focus:border-red-600": hasError,
   };
   return (
-    <>
+    <div class="flex flex-col">
       <input
         type={type}
         name={name}
@@ -23,7 +23,7 @@ const TextInput = ({ type, name, id, placeholder, errors, ...rest }) => {
         {...rest}
       />
       {errors[id] && <span className="text-red-500">{errors[id].message}</span>}
-    </>
+    </div>
   );
 };
 
