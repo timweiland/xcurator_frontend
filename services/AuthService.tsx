@@ -52,16 +52,29 @@ const fetchToken = (username: string, password: string): Promise<Response> => {
 
 const fetchNewToken = (): Promise<Response> => {
   const url = makeUrl("/refresh/");
-  return axios.post(
-    url,
-    {},
-    {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return axios
+    .post(
+      url,
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .catch((error) => {
+      if (error.response) {
+        if (error.response.data && error.response.data.detail) {
+          throw new Error(error.response.data.detail);
+        }
+        throw new Error(JSON.stringify(error.response.data));
+      } else if (error.request) {
+        throw new Error("Could not reach server.");
+      } else {
+        throw new Error(error.message);
+      }
+    });
 };
 
 async function fetchUser(token: string): Promise<Response> {
