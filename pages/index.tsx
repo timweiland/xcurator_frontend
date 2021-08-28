@@ -1,82 +1,93 @@
-import Head from 'next/head'
+import Head from "next/head";
+import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+import LayoutFlexibleFooter from "@components/Layout/LayoutFlexibleFooter";
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
+const MainHero = (): JSX.Element => (
+  <div className="relative" style={{ height: "75vh" }}>
+    <div className="w-full h-full bg-primary-800 absolute top-0 left-0 opacity-60 z-10"></div>
+    <div className="w-full h-full flex flex-col justify-center items-center absolute top-0 left-0 z-30">
+      <h1 className="text-6xl font-bold text-white">Explore history with AI</h1>
+      <button className="w-96 text-3xl mt-4 py-2 px-4 border border-transparent font-bold rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Show me
+      </button>
     </div>
-  )
-}
+    <Image
+      src="/images/waterloo.jpg"
+      layout="fill"
+      alt="xCurator Background"
+      objectFit="cover"
+    />
+  </div>
+);
+
+const Highlights = (): JSX.Element => (
+  <article
+    className="w-full flex px-16 py-16 relative"
+    style={{ height: "70vh" }}
+  >
+    <div className="h-full w-1/2 relative border-2 border-gray-500">
+      <Image
+        src="/images/blm_throne.jpg"
+        layout="fill"
+        alt="Highlights"
+        objectFit="cover"
+      />
+    </div>
+    <div className="ml-10 flex flex-col justify-center">
+      <h1 className="text-3xl font-bold">Highlights</h1>
+      <p className="mt-4 text-lg">
+        Check out the highlights of our collections
+      </p>
+    </div>
+  </article>
+);
+
+const UntoldStories = (): JSX.Element => (
+  <article
+    className="w-full flex flex-row-reverse px-16 py-16 relative bg-gray-200"
+    style={{ height: "70vh" }}
+  >
+    <div className="h-full w-1/2 relative border-2 border-gray-500">
+      <Image
+        src="/images/ap_sarcophagus.jpg"
+        layout="fill"
+        alt="Highlights"
+        objectFit="cover"
+      />
+    </div>
+    <div className="flex-1 flex flex-col justify-center">
+      <h1 className="text-3xl font-bold">Untold Stories</h1>
+      <p className="mt-4 text-lg">Discover hidden gems</p>
+    </div>
+  </article>
+);
+
+const CallToAction = (): JSX.Element => (
+  <div className="w-full flex items-center p-32">
+    <h1 className="flex-1 text-3xl font-bold">Use the xCurator</h1>
+    <div className="flex">
+      <button className="w-72 text-2xl py-2 px-4 border border-transparent font-bold rounded-md text-white bg-primary-800 hover:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Sign up
+      </button>
+      <button className="w-72 text-2xl ml-8 py-2 px-4 border border-transparent font-bold rounded-md text-primary-800 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Please explain
+      </button>
+    </div>
+  </div>
+);
+
+const Home = (): JSX.Element => {
+  return (
+    <div className="w-full flex flex-col">
+      <MainHero />
+      <Highlights />
+      <UntoldStories />
+      <CallToAction />
+    </div>
+  );
+};
+
+Home.getLayout = (page) => <LayoutFlexibleFooter>{page}</LayoutFlexibleFooter>;
+
+export default Home;
