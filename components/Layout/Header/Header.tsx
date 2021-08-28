@@ -150,7 +150,7 @@ const ProfileSection = (): JSX.Element => {
 
 export default function Header(): JSX.Element {
   return (
-    <Disclosure as="nav" className="bg-pink-800 w-full shadow">
+    <Disclosure as="nav" className="bg-pink-800 w-full shadow z-50">
       {({ open }) => (
         <>
           <div className="mx-auto px-2 sm:px-6 lg:px-8 flex flex-col">
@@ -191,7 +191,7 @@ export default function Header(): JSX.Element {
           </div>
 
           <Disclosure.Panel className="">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="px-2 pt-2 pb-3 space-y-1 absolute w-full bg-pink-800">
               {navigation.map((item) => (
                 <a
                   key={item.name}
