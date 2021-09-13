@@ -1,0 +1,27 @@
+#+TITLE: README
+* xCurator Frontend
+Welcome! This is the repository for the website frontend of the [[https://www.landesmuseum.de/museum/forschung-projekte/kuenstliche-intelligenz-museum][xCurator]].
+
+** Tech stack
+- General: [[https://reactjs.org/][React]], [[https://nextjs.org/][Next.js]], [[https://www.typescriptlang.org/][TypeScript]]
+- Styling: [[https://tailwindcss.com/][TailwindCSS]], [[https://headlessui.dev/][Headless UI]], [[https://heroicons.com/][heroicons]]
+- Forms: [[https://react-hook-form.com/][React Hook Form]], [[https://github.com/jquense/yup][yup]]
+- Global state: [[https://github.com/pmndrs/zustand][zustand]]
+
+Cheers to all of these projects!
+
+** Requirements
+- [[https://nodejs.org/en/][Node.js]] v14+
+ 
+** Development
+- Run =npm i= in the root directory to install all packages
+- Make sure =.env.development= fits your needs - if it doesn't, create a copy called =.env.development.local= and change any values as you see fit
+- Run =npm run dev= to start the next.js development server
+  + It supports hot reloading - no need to restart the development server for code changes
+    - You will need to restart it e.g. for changes to the .env though
+- Please use a code formatter before committing.
+  + I run [[https://prettier.io/][Prettier]] automatically on each save
+  + TODO: We should add a pre-commit hook for this at some point
+
+** Questions & Problems
+In case you encounter any problems or you have any questions, please raise an issue here on Github.
