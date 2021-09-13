@@ -1,14 +1,9 @@
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextInput from "@components/Form/TextInput";
 import Checkbox from "@components/Form/Checkbox";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import axios from "axios";
-
-const REGISTER_URI =
-  process.env.NEXT_PUBLIC_BACKEND_BASE +
-  process.env.NEXT_PUBLIC_USER_AUTH_PATH +
-  "/register/";
 
 const transformFormData = ({
   firstname,
@@ -22,16 +17,6 @@ const transformFormData = ({
     last_name: lastname,
     ...rest,
   };
-};
-
-const handleRegisterSubmit = (formData) => {
-  const transformedData = transformFormData(formData);
-  console.log(transformedData);
-  return axios.post(REGISTER_URI, transformFormData(formData), {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 };
 
 const validationSchema = Yup.object().shape({
@@ -52,21 +37,68 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-const AccountCredentials = (props) => {
+const AccountCredentials = ({ onCredentialsSubmit }) => {
+  const [submitError, setSubmitError] = useState(undefined);
+
   const {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     reValidateMode: "onSubmit",
     resolver: yupResolver(validationSchema),
   });
+  console.log(submitError);
+
+  const firstname = register("firstname", {
+    required: "Please enter your first name.",
+  });
+  const lastname = register("lastname", {
+    required: "Please enter your last name.",
+  });
+  const email = register("email", {
+    required: "Please enter your email address.",
+
+    pattern: {
+      value: /\S+@\S+\.\S+/,
+      message: "Invalid email format.",
+    },
+  });
+  const username = register("username", {
+    required: "Please choose a username.",
+    minLength: {
+      value: 3,
+      message: "Your username must have at least 3 characters.",
+    },
+    maxLength: {
+      value: 20,
+      message: "Your username cannot have more than 20 characters.",
+    },
+  });
+  const password = register("password", {
+    required: "Please choose a password.",
+    minLength: {
+      value: 6,
+      message: "Your password must have at least 6 characters.",
+    },
+  });
 
   return (
     <form
       className="flex flex-col max-w-3xl m-auto"
-      onSubmit={handleSubmit(handleRegisterSubmit)}
+      onSubmit={handleSubmit(
+        (formData) => {
+          const credentials = transformFormData(formData);
+          onCredentialsSubmit(credentials).catch((error) => {
+            setSubmitError(error);
+          });
+        },
+        (errors) => {
+          setSubmitError(undefined);
+        }
+      )}
     >
       <div className="w-full flex justify-center mb-2">
         <div className="mr-2 w-full">
@@ -78,9 +110,7 @@ const AccountCredentials = (props) => {
             name="firstname"
             id="firstname"
             placeholder="First name"
-            {...register("firstname", {
-              required: "Please enter your first name.",
-            })}
+            {...firstname}
             errors={errors}
           />
         </div>
@@ -93,9 +123,7 @@ const AccountCredentials = (props) => {
             name="lastname"
             id="lastname"
             placeholder="Last name"
-            {...register("lastname", {
-              required: "Please enter your last name.",
-            })}
+            {...lastname}
             errors={errors}
           />
         </div>
@@ -109,14 +137,7 @@ const AccountCredentials = (props) => {
           name="email"
           id="email"
           placeholder="Email address"
-          {...register("email", {
-            required: "Please enter your email address.",
-
-            pattern: {
-              value: /\S+@\S+\.\S+/,
-              message: "Invalid email format.",
-            },
-          })}
+          {...email}
           errors={errors}
         />
       </div>
@@ -129,17 +150,7 @@ const AccountCredentials = (props) => {
           name="username"
           id="username"
           placeholder="Username"
-          {...register("username", {
-            required: "Please choose a username.",
-            minLength: {
-              value: 3,
-              message: "Your username must have at least 3 characters.",
-            },
-            maxLength: {
-              value: 20,
-              message: "Your username cannot have more than 20 characters.",
-            },
-          })}
+          {...username}
           errors={errors}
         />
       </div>
@@ -152,13 +163,7 @@ const AccountCredentials = (props) => {
           name="password"
           id="password"
           placeholder="Password"
-          {...register("password", {
-            required: "Please choose a password.",
-            minLength: {
-              value: 6,
-              message: "Your password must have at least 6 characters.",
-            },
-          })}
+          {...password}
           errors={errors}
         />
       </div>
@@ -192,6 +197,9 @@ const AccountCredentials = (props) => {
           />
         )}
       />
+      {submitError && (
+        <span className="text-red-500 mt-3">Error: {submitError.message}</span>
+      )}
       <div className="w-full mt-3 max-w-xl m-auto">
         <button
           type="submit"
