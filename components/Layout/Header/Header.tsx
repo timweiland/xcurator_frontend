@@ -93,7 +93,7 @@ const ProfileSection = (): JSX.Element => {
   return (
     <div class="flex items-center">
       <span className="text-white">
-        Hello, <span className="font-bold">{user.username}</span>
+        Hello, <span className="font-bold capitalize">{user.first_name}</span>
       </span>
       <Menu as="div" className="ml-5">
         {({ open }) => (
