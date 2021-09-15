@@ -5,6 +5,7 @@ import { Tab } from "@headlessui/react";
 import axios from "axios";
 import classNames from "classnames";
 
+import SimpleGallery from "@components/Gallery/SimpleGallery";
 const MarkerMap = dynamic(() => import("@components/Map/MarkerMap"), {
   ssr: false,
 });
@@ -19,12 +20,17 @@ const fetchMuseumObject = (mid) => {
   return axios.get(url);
 };
 
-const AttributeField = ({ title, children }) => (
-  <div className="mb-4">
-    <h2 className="font-bold">{title}</h2>
-    {children}
-  </div>
-);
+const AttributeField = ({ title, children, condition }) =>
+  condition && (
+    <div className="mt-4">
+      <h2 className="font-bold">{title}</h2>
+      {children}
+    </div>
+  );
+
+AttributeField.defaultProps = {
+  condition: true,
+};
 
 const locationTypeMap = {
   creation_location: "Creation",
@@ -62,6 +68,13 @@ const SubjectTag = ({ name }): JSX.Element => {
 
 const MuseumObject = (data) => (
   <div className="flex flex-col">
+    <h1 className="text-3xl font-bold">{data.objecttitle_set[0].title}</h1>
+    {data.objectimage_set.length > 0 && (
+      <SimpleGallery
+        imagePaths={data.objectimage_set.map((img) => img.image)}
+        className="relative w-3/4 h-96 bg-white mt-4"
+      />
+    )}
     <AttributeField title="Title">
       {data.objecttitle_set.map((title) => (
         <p>{title.title}</p>
@@ -76,22 +89,25 @@ const MuseumObject = (data) => (
         </div>
       ))}
     </AttributeField>
-    <AttributeField title="Creator">
+    <AttributeField title="Creator" condition={data.creator.length > 0}>
       {data.creator.map((creator) => (
         <p>{creator.name}</p>
       ))}
     </AttributeField>
-    <AttributeField title="Description">
+    <AttributeField title="Description" condition={data.description !== ""}>
       <p>{data.description}</p>
     </AttributeField>
-    <AttributeField title="Tags">
+    <AttributeField title="Tags" condition={data.subject.length > 0}>
       <div className="flex flex-row space-x-1 mt-2">
         {data.subject.map((tag) => (
           <SubjectTag name={tag.name} />
         ))}
       </div>
     </AttributeField>
-    <AttributeField title="Location">
+    <AttributeField
+      title="Location"
+      condition={data.objectlocation_set.length > 0}
+    >
       <Tab.Group className="w-full lg:w-1/2 mt-2 shadow-md" as="div">
         <Tab.List className="flex p-1 space-x-1 bg-primary-800 rounded-xl">
           {data.objectlocation_set.map((location) => (
