@@ -37,7 +37,7 @@ const getLocationTypeName = (locationType) => {
   return locationType;
 };
 
-const Location = ({ location, term }) => {
+const Location = ({ location, term }): JSX.Element => {
   return (
     <div className="flex flex-col p-4 rounded-lg bg-white">
       <h3 className="font-bold text-center">{term}</h3>
@@ -49,6 +49,14 @@ const Location = ({ location, term }) => {
         />
       )}
     </div>
+  );
+};
+
+const SubjectTag = ({ name }): JSX.Element => {
+  return (
+    <span className="bg-gray-100 border-black border rounded-lg p-2">
+      {name}
+    </span>
   );
 };
 
@@ -75,6 +83,13 @@ const MuseumObject = (data) => (
     </AttributeField>
     <AttributeField title="Description">
       <p>{data.description}</p>
+    </AttributeField>
+    <AttributeField title="Tags">
+      <div className="flex flex-row space-x-1 mt-2">
+        {data.subject.map((tag) => (
+          <SubjectTag name={tag.name} />
+        ))}
+      </div>
     </AttributeField>
     <AttributeField title="Location">
       <Tab.Group className="w-full lg:w-1/2 mt-2 shadow-md" as="div">
