@@ -108,7 +108,7 @@ export const useAuth = create((set, get) => ({
     if (!get().accessTokenIsValid()) {
       await get().refreshToken();
     } else {
-      set({ isAuthenticated: true, loading: false });
+      set({ isAuthenticated: true, isLoading: false });
       get().initUser();
     }
   },
