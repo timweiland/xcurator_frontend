@@ -60,82 +60,103 @@ const Location = ({ location, term }): JSX.Element => {
 
 const SubjectTag = ({ name }): JSX.Element => {
   return (
-    <span className="bg-gray-100 border-black border rounded-lg p-2">
+    <a
+      href={`/tag/${name}`}
+      className="bg-gray-100 border-black border rounded-lg p-2"
+    >
       {name}
-    </span>
+    </a>
   );
 };
 
 const MuseumObject = (data) => (
-  <div className="flex flex-col">
-    <h1 className="text-3xl font-bold">{data.objecttitle_set[0].title}</h1>
-    {data.objectimage_set.length > 0 && (
-      <SimpleGallery
-        imagePaths={data.objectimage_set.map((img) => img.image)}
-        className="relative w-3/4 h-96 bg-white mt-4"
-      />
-    )}
-    <AttributeField title="Title">
-      {data.objecttitle_set.map((title) => (
-        <p>{title.title}</p>
+  <div className="relative">
+    <div className="absolute top-0 right-0 p-4 bg-primary-800 rounded-md flex flex-col text-white shadow-md">
+      {[
+        "Create",
+        "Share",
+        "Translate",
+        "Add to my list",
+        "Add to my collection",
+        "Train AI",
+        "Book Expert",
+        "Order in shop",
+      ].map((text) => (
+        <a href="#" className="my-1">
+          {text}
+        </a>
       ))}
-    </AttributeField>
-    <AttributeField title="Collection">
-      {data.collection.map((collection) => (
-        <div>
-          <h3>{collection.name}</h3>
-          <p>{collection.museum.name}</p>
-          <p>Domain: {collection.domain.name}</p>
-        </div>
-      ))}
-    </AttributeField>
-    <AttributeField title="Creator" condition={data.creator.length > 0}>
-      {data.creator.map((creator) => (
-        <p>{creator.name}</p>
-      ))}
-    </AttributeField>
-    <AttributeField title="Description" condition={data.description !== ""}>
-      <p>{data.description}</p>
-    </AttributeField>
-    <AttributeField title="Tags" condition={data.subject.length > 0}>
-      <div className="flex flex-row space-x-1 mt-2">
-        {data.subject.map((tag) => (
-          <SubjectTag name={tag.name} />
+    </div>
+    <div className="flex flex-col">
+      <h1 className="text-3xl font-bold">{data.objecttitle_set[0].title}</h1>
+      {data.objectimage_set.length > 0 && (
+        <SimpleGallery
+          imagePaths={data.objectimage_set.map((img) => img.image)}
+          className="relative w-3/4 h-96 bg-white mt-4"
+        />
+      )}
+      <AttributeField title="Title">
+        {data.objecttitle_set.map((title) => (
+          <p>{title.title}</p>
         ))}
-      </div>
-    </AttributeField>
-    <AttributeField
-      title="Location"
-      condition={data.objectlocation_set.length > 0}
-    >
-      <Tab.Group className="w-full lg:w-1/2 mt-2 shadow-md" as="div">
-        <Tab.List className="flex p-1 space-x-1 bg-primary-800 rounded-xl">
-          {data.objectlocation_set.map((location) => (
-            <Tab
-              key={location.location_type.name}
-              className={({ selected }) =>
-                classNames(
-                  "px-2.5 md:px-4 py-2.5 text-sm leading-5 font-medium text-primary-700 rounded-lg",
-                  "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60",
-                  selected
-                    ? "bg-white shadow"
-                    : "text-pink-100 hover:bg-white/[0.12] hover:text-white"
-                )
-              }
-            >
-              {getLocationTypeName(location.location_type.name)}
-            </Tab>
+      </AttributeField>
+      <AttributeField title="Collection">
+        {data.collection.map((collection) => (
+          <div>
+            <h3>{collection.name}</h3>
+            <p>{collection.museum.name}</p>
+            <p>Domain: {collection.domain.name}</p>
+          </div>
+        ))}
+      </AttributeField>
+      <AttributeField title="Creator" condition={data.creator.length > 0}>
+        {data.creator.map((creator) => (
+          <p>{creator.name}</p>
+        ))}
+      </AttributeField>
+      <AttributeField title="Description" condition={data.description !== ""}>
+        <p>{data.description}</p>
+      </AttributeField>
+      <AttributeField title="Tags" condition={data.subject.length > 0}>
+        <div className="flex flex-row space-x-1 mt-2">
+          {data.subject.map((tag) => (
+            <SubjectTag name={tag.name} />
           ))}
-        </Tab.List>
-        <Tab.Panels>
-          {data.objectlocation_set.map((location) => (
-            <Tab.Panel>
-              <Location {...location} />
-            </Tab.Panel>
-          ))}
-        </Tab.Panels>
-      </Tab.Group>
-    </AttributeField>
+        </div>
+      </AttributeField>
+      <AttributeField
+        title="Location"
+        condition={data.objectlocation_set.length > 0}
+      >
+        <Tab.Group className="w-full lg:w-1/2 mt-2 shadow-md" as="div">
+          <Tab.List className="flex p-1 space-x-1 bg-primary-800 rounded-xl">
+            {data.objectlocation_set.map((location) => (
+              <Tab
+                key={location.location_type.name}
+                className={({ selected }) =>
+                  classNames(
+                    "px-2.5 md:px-4 py-2.5 text-sm leading-5 font-medium text-primary-700 rounded-lg",
+                    "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60",
+                    selected
+                      ? "bg-white shadow"
+                      : "text-pink-100 hover:bg-white/[0.12] hover:text-white"
+                  )
+                }
+              >
+                {getLocationTypeName(location.location_type.name)}
+              </Tab>
+            ))}
+          </Tab.List>
+          <Tab.Panels>
+            {data.objectlocation_set.map((location) => (
+              <Tab.Panel>
+                <Location {...location} />
+              </Tab.Panel>
+            ))}
+          </Tab.Panels>
+        </Tab.Group>
+      </AttributeField>
+    </div>
   </div>
 );
 const MuseumObjectView = () => {
