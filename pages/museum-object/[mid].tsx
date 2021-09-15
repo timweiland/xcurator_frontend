@@ -1,6 +1,13 @@
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import { useState } from "react";
+import { Tab } from "@headlessui/react";
 import axios from "axios";
+import classNames from "classnames";
+
+const MarkerMap = dynamic(() => import("@components/Map/MarkerMap"), {
+  ssr: false,
+});
 
 const API_BASE =
   process.env.NEXT_PUBLIC_BACKEND_BASE +
@@ -18,6 +25,33 @@ const AttributeField = ({ title, children }) => (
     {children}
   </div>
 );
+
+const locationTypeMap = {
+  creation_location: "Creation",
+};
+
+const getLocationTypeName = (locationType) => {
+  if (locationType in locationTypeMap) {
+    return locationTypeMap[locationType];
+  }
+  return locationType;
+};
+
+const Location = ({ location, term }) => {
+  return (
+    <div className="flex flex-col p-4 rounded-lg bg-white">
+      <h3 className="font-bold text-center">{term}</h3>
+      {location && !(location.lat == 0 && location.lon == 0) && (
+        <MarkerMap
+          position={[location.lat, location.lon]}
+          label={term}
+          className="w-full h-56 md:h-96 mt-2"
+        />
+      )}
+    </div>
+  );
+};
+
 const MuseumObject = (data) => (
   <div className="flex flex-col">
     <AttributeField title="Title">
@@ -43,9 +77,31 @@ const MuseumObject = (data) => (
       <p>{data.description}</p>
     </AttributeField>
     <AttributeField title="Location">
-      {data.objectlocation_set.map((location) => (
-        <p>{location.term}</p>
-      ))}
+      <Tab.Group className="w-full lg:w-1/2 mt-2 shadow-md" as="div">
+        <Tab.List className="flex p-1 space-x-1 bg-primary-800 rounded-xl">
+          {data.objectlocation_set.map((location) => (
+            <Tab
+              key={location.location_type.name}
+              className={({ selected }) =>
+                classNames(
+                  "px-2.5 md:px-4 py-2.5 text-sm leading-5 font-medium text-primary-700 rounded-lg",
+                  "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60",
+                  selected
+                    ? "bg-white shadow"
+                    : "text-pink-100 hover:bg-white/[0.12] hover:text-white"
+                )
+              }
+            >
+              {getLocationTypeName(location.location_type.name)}
+            </Tab>
+          ))}
+        </Tab.List>
+        <Tab.Panels>
+          {data.objectlocation_set.map((location) => (
+            <Location {...location} />
+          ))}
+        </Tab.Panels>
+      </Tab.Group>
     </AttributeField>
   </div>
 );
