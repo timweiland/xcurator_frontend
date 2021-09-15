@@ -113,7 +113,9 @@ const MuseumObject = (data) => (
         </Tab.List>
         <Tab.Panels>
           {data.objectlocation_set.map((location) => (
-            <Location {...location} />
+            <Tab.Panel>
+              <Location {...location} />
+            </Tab.Panel>
           ))}
         </Tab.Panels>
       </Tab.Group>
